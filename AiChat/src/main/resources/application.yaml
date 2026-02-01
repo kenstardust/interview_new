@@ -1,0 +1,8 @@
+server:
+  port: 8051
+spring:
+  application:
+    name:Ai Demo
+  ai:
+    dashscope:
+      api-key:${}

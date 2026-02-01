@@ -1,0 +1,17 @@
+node_modules
+/dist
+/es
+/lib
+/typings
+/resolver-dist
+.dumi/tmp
+.dumi/tmp-test
+.dumi/tmp-production
+.DS_Store
+/coverage
+docs/.vitepress/cache
+docs/.vitepress/dist
+docs/.vitepress/.temp
+.vitepress/cache
+.cursor
+.history
