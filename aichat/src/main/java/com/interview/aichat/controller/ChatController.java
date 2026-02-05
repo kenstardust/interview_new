@@ -1,4 +1,4 @@
-package com.interview.kevin.controller;
+package com.interview.aichat.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/ai/v1")
-public class CharController {
+public class ChatController {
     //private final
 
     @RequestMapping("/info")
-    public String CharController(){
+    public String chatController(){
         return "Hello World";
     }
 

@@ -1,4 +1,4 @@
-package com.interview.kevin;
+package com.interview.aichat;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

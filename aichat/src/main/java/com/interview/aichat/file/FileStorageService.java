@@ -1,10 +1,9 @@
-package com.interview.kevin.file;
+package com.interview.aichat.file;
 
-import com.interview.kevin.config.StorageConfigurationProperties;
+import com.interview.aichat.config.StorageConfigurationProperties;
 import com.interview.kevin.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerRetryPolicy;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -25,13 +24,22 @@ public class FileStorageService {
     private final StorageConfigurationProperties storageConfig;
 
     /**
+     * 获取文件Url
+     *
+     * @param fileKey
+     * @return
+     */
+    public String getFileUrl(String fileKey) {
+        return String.format("%s/%s/%s", storageConfig.getEndpoint(), storageConfig.getBucket(), fileKey);
+    }
+    /**
      * 上传对话文件
      *
      * @param file
      * @return
      */
-    public String uploadFile(MultipartFile file) {
-        return uploadFileActor(file, "file");
+    public String uploadChatFile(MultipartFile file) {
+        return uploadFileActor(file, "chat");
     }
 
     /**
@@ -168,7 +176,7 @@ public class FileStorageService {
         String datePath = now.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
         String uuid = UUID.randomUUID().toString().substring(0, 8);
         String safeName = sanitizeFilename(originalFilename);
-        return String.format("%s/%s/%s/%s", datePath, prefix, uuid, safeName);
+        return String.format("%s/%s/%s/%s", prefix, datePath, uuid, safeName);
     }
 
     private String sanitizeFilename(String filename) {

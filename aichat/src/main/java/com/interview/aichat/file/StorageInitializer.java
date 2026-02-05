@@ -1,4 +1,4 @@
-package com.interview.kevin.file;
+package com.interview.aichat.file;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;

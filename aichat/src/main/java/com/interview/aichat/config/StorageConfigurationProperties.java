@@ -1,4 +1,4 @@
-package com.interview.kevin.config;
+package com.interview.aichat.config;
 
 import lombok.Data;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
