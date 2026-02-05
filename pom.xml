@@ -34,10 +34,22 @@
 		<spring-boot.version>3.2.8</spring-boot.version>
 		<AWS-S3-version>2.25.27</AWS-S3-version>
 		<mybatis-plus-version>3.5.15</mybatis-plus-version>
+		<Tika-version>2.9.2</Tika-version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- Apache Tika -->
+			<dependency>
+				<groupId>org.apache.tika</groupId>
+				<artifactId>tika-core</artifactId>
+				<version>${Tika-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.tika</groupId>
+				<artifactId>tika-parsers-standard-package</artifactId>
+				<version>${Tika-version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.postgresql</groupId>
 				<artifactId>postgresql</artifactId>
