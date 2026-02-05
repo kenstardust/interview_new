@@ -20,7 +20,9 @@
 	<name>interview_new</name>
 
 	<modules>
-		<module>AiChat</module>
+		<module>aichat</module>
+		<module>gateway</module>
+		<module>common</module>
 	</modules>
 
 	<properties>
@@ -28,10 +30,29 @@
 		<spring-cloud-alibaba.version>2023.0.1.0</spring-cloud-alibaba.version>
 		<alibaba-ai.version>1.1.0.0-RC2</alibaba-ai.version>
 		<maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+		<spring-cloud.version>2023.0.1</spring-cloud.version>
+		<spring-boot.version>3.2.8</spring-boot.version>
+		<AWS-S3-version>2.25.27</AWS-S3-version>
+		<mybatis-plus-version>3.5.15</mybatis-plus-version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>42.7.4</version>
+			</dependency>
+			<dependency>
+				<groupId>com.pgvector</groupId>
+				<artifactId>pgvector</artifactId>
+				<version>0.1.6</version>
+			</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-boot-starter</artifactId>
+				<version>${mybatis-plus-version}</version>
+			</dependency>
 			<dependency>
 				<groupId>com.alibaba.cloud</groupId>
 				<artifactId>spring-cloud-alibaba-dependencies</artifactId>
@@ -42,6 +63,27 @@
 				<groupId>com.alibaba.cloud.ai</groupId>
 				<artifactId>spring-ai-alibaba-dependencies</artifactId>
 				<version>${alibaba-ai.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring-boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>software.amazon.awssdk</groupId>
+				<artifactId>bom</artifactId>
+				<version>2.25.27</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

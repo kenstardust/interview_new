@@ -8,8 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/ai/v1")
 public class CharController {
-    private final
+    //private final
 
-    public CharController()
+    @RequestMapping("/info")
+    public String CharController(){
+        return "Hello World";
+    }
 
 }

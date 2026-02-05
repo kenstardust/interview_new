@@ -1,0 +1,13 @@
+server:
+  port: 8051
+spring:
+  application:
+    name: aichat
+  ai:
+    dashscope:
+      api-key: sk-2da9f24dc9f944bbbfcc5d7dccf67910
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 10.1.40.171:8848
+
