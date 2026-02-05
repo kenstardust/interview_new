@@ -1,0 +1,27 @@
+server:
+  port: 8050
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+
+
+    nacos:
+      discovery:
+        server-addr: 10.1.40.171:8848
+      config:
+        server-addr: 10.1.40.171:8848
+        file-extension: yaml
+        namespace: 648bf097-1fa4-47cb-a31f-696e1869fb38
+
+#logging:
+#  level:
+#    org.springframework.cloud.gateway: DEBUG
+#    org.springframework.cloud.loadbalancer: DEBUG
