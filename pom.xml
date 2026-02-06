@@ -35,17 +35,10 @@
         <AWS-S3-version>2.25.27</AWS-S3-version>
         <mybatis-plus-version>3.5.15</mybatis-plus-version>
         <Tika-version>2.9.2</Tika-version>
-        <pgvector-version>2.0.0-M1</pgvector-version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!--			Pg vector-->
-            <dependency>
-                <groupId>org.springframework.ai</groupId>
-                <artifactId>spring-ai-starter-vector-store-pgvector</artifactId>
-                <version>${pgvector-version}</version>
-            </dependency>
             <!-- Apache Tika -->
             <dependency>
                 <groupId>org.apache.tika</groupId>
@@ -67,19 +60,11 @@
                 <artifactId>pgvector</artifactId>
                 <version>0.1.6</version>
             </dependency>
-
-            <!--			Myabtis-plus-->
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-boot-starter-test</artifactId>
-                <version>${mybatis-plus-version}</version>
-            </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
                 <version>${mybatis-plus-version}</version>
             </dependency>
-            <!--            Alibaba-->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
@@ -113,7 +98,6 @@
                 <scope>import</scope>
             </dependency>
         </dependencies>
-
     </dependencyManagement>
 
     <build>
