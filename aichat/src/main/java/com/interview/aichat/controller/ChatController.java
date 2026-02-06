@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChatController {
     //private final
 
-    @RequestMapping("/info")
+    @RequestMapping("/test")
     public String chatController(){
         return "Hello World";
     }
+
+
 
 }

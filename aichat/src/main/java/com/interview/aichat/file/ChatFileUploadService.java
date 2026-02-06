@@ -18,6 +18,7 @@ public class ChatFileUploadService {
 
     public Map<String,Object> uploadFileAndAnalyze(MultipartFile file) {
 
+        return null;
     }
 
 
