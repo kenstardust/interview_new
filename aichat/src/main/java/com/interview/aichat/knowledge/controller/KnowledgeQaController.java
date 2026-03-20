@@ -25,7 +25,7 @@ public class KnowledgeQaController {
         return orchestrator.ask(request);
     }
 
-    @GetMapping("/drawing/{sessionId}/resume")
+    @GetMapping("/{sessionId}/resume")
     public Object resume(@PathVariable String sessionId) {
         return drawingSessionLifecycleService.resume(sessionId);
     }

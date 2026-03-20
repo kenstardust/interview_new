@@ -3,23 +3,3 @@ server:
 spring:
   application:
     name: aichat
-  ai:
-    dashscope:
-      api-key: ${DASHSCOPE_API_KEY:}
-  data:
-    redis:
-      host: ${REDIS_HOST:127.0.0.1}
-      port: ${REDIS_PORT:6379}
-  datasource:
-    url: ${POSTGRES_URL:jdbc:postgresql://127.0.0.1:5432/aichat}
-    username: ${POSTGRES_USER:postgres}
-    password: ${POSTGRES_PASSWORD:postgres}
-  cloud:
-    nacos:
-      discovery:
-        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
-
-kb:
-  storage:
-    backend: ${KB_STORAGE_BACKEND:LOCAL}
-    local-path: ${KB_LOCAL_STORAGE_PATH:/tmp/kb-storage}
