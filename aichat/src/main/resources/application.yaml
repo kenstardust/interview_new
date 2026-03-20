@@ -20,5 +20,5 @@ aichat:
   stream:
     key: knowledgebase:tasks
     group: kg-consumer-group
-    status-key-prefix: task:status:
+    status-key-prefix: "task:status:"
     pending-idle-ms: 60000
