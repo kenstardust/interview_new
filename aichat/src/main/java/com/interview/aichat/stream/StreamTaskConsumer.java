@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Executor;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Slf4j
 @Service
@@ -37,9 +38,13 @@ public class StreamTaskConsumer {
     private final Executor streamBusinessExecutor;
 
     private String consumerName;
+    private final AtomicBoolean initialized = new AtomicBoolean(false);
 
     @EventListener(ApplicationReadyEvent.class)
     public void initConsumerGroup() {
+        if (!initialized.compareAndSet(false, true)) {
+            return;
+        }
         consumerName = buildConsumerName();
         try {
             if (Boolean.FALSE.equals(redisTemplate.hasKey(streamProperties.getKey()))) {
@@ -55,6 +60,10 @@ public class StreamTaskConsumer {
 
     @Scheduled(fixedDelay = 1000)
     public void layerOnePullAndDispatch() {
+        ensureInitialized();
+        if (consumerName == null || consumerName.isBlank()) {
+            return;
+        }
         List<MapRecord<String, Object, Object>> records = redisTemplate.opsForStream().read(
                 Consumer.from(streamProperties.getGroup(), consumerName),
                 StreamReadOptions.empty().count(10).block(Duration.ofSeconds(1)),
@@ -95,6 +104,10 @@ public class StreamTaskConsumer {
      */
     @Scheduled(initialDelay = 15000, fixedDelay = 15000)
     public void retryPendingMessage() {
+        ensureInitialized();
+        if (consumerName == null || consumerName.isBlank()) {
+            return;
+        }
         PendingMessagesSummary summary = redisTemplate.opsForStream().pending(
                 streamProperties.getKey(), streamProperties.getGroup()
         );
@@ -145,6 +158,12 @@ public class StreamTaskConsumer {
             return InetAddress.getLocalHost().getHostName() + "-" + UUID.randomUUID();
         } catch (UnknownHostException e) {
             return "consumer-" + UUID.randomUUID();
+        }
+    }
+
+    private void ensureInitialized() {
+        if (!initialized.get()) {
+            initConsumerGroup();
         }
     }
 }
