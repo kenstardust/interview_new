@@ -140,6 +140,25 @@ public class FileStorageService {
         }
     }
 
+
+    public String uploadBytes(byte[] content, String originalFilename, String prefix, String contentType) {
+        String fileKey = generateFileKey(originalFilename, prefix);
+        try {
+            PutObjectRequest putRequest = PutObjectRequest.builder()
+                    .bucket(storageConfig.getBucket())
+                    .key(fileKey)
+                    .contentType(contentType == null ? "application/octet-stream" : contentType)
+                    .contentLength((long) content.length)
+                    .build();
+            s3Client.putObject(putRequest, RequestBody.fromBytes(content));
+            log.info("字节流上传成功：{}", fileKey);
+            return fileKey;
+        } catch (S3Exception e) {
+            log.error("字节流上传失败：{}", e.getMessage(), e);
+            throw new BusinessException(ErrorCode.STORAGE_UPLOAD_FAILED, "字节流存储失败" + e.getMessage());
+        }
+    }
+
     /**
      * 上传文件实现
      *
