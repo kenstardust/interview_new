@@ -5,9 +5,26 @@ spring:
     name: aichat
   ai:
     dashscope:
-      api-key: sk-2da9f24dc9f944bbbfcc5d7dccf67910
+      api-key: ${DASHSCOPE_API_KEY:}
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+  datasource:
+    url: ${POSTGRES_URL:jdbc:postgresql://127.0.0.1:5432/aichat}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
   cloud:
     nacos:
       discovery:
-        server-addr: 10.1.40.171:8848
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
 
+aichat:
+  storage:
+    mode: ${AICHAT_STORAGE_MODE:S3}
+    local-base-path: ${AICHAT_LOCAL_STORAGE_PATH:/tmp/aichat-storage}
+    endpoint: ${AICHAT_STORAGE_ENDPOINT:http://127.0.0.1:9000}
+    access-key: ${AICHAT_STORAGE_ACCESS_KEY:}
+    secret-key: ${AICHAT_STORAGE_SECRET_KEY:}
+    bucket: ${AICHAT_STORAGE_BUCKET:aichat}
+    region: ${AICHAT_STORAGE_REGION:kevin_1}
