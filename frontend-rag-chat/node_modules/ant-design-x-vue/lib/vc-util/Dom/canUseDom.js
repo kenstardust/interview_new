@@ -1,0 +1,1 @@
+"use strict";Object.defineProperties(exports,{__esModule:{value:!0},[Symbol.toStringTag]:{value:"Module"}});function e(){return!!(typeof window<"u"&&window.document&&window.document.createElement)}exports.default=e;

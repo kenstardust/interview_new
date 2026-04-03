@@ -25,6 +25,11 @@
             <groupId>com.pgvector</groupId>
             <artifactId>pgvector</artifactId>
         </dependency>
+        <!--        Flyway数据库迁移工具-->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
         <!--        loadbalance-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -85,11 +90,10 @@
             <scope>test</scope>
         </dependency>
 
-        <!--        bootstrap-->
+        <!--        bootstrap support for Spring Boot 3.x-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
-            <version>3.0.2</version>
         </dependency>
 
     </dependencies>

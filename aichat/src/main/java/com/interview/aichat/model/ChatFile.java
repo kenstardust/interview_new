@@ -1,10 +1,8 @@
 package com.interview.aichat.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.interview.kevin.constant.TaskStatusCode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,10 +36,13 @@ public class ChatFile {
 
     private LocalDateTime lastaccessedat;
 
-    @TableField(exist = false)
-    private TaskStatusCode taskstatus = TaskStatusCode.PENDING;
+    /**
+     * 任务状态：PENDING, PROCESSING, COMPLETED, FAILED
+     * 数据库字段（VARCHAR(20)）
+     */
+    private String taskstatus;
 
-    private String  analyzeError;
+    private String analyzeError;
 
     private String fileHash;
 

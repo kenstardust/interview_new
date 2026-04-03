@@ -1,17 +1,41 @@
-D:\work station\interview_new\aichat\src\main\java\com\interview\aichat\config\S3Config.java
-D:\work station\interview_new\aichat\src\main\java\com\interview\aichat\file\ChatParseService.java
-D:\work station\interview_new\aichat\src\main\java\com\interview\aichat\service\ChatUploadService.java
-D:\work station\interview_new\aichat\src\main\java\com\interview\aichat\AiChat.java
-D:\work station\interview_new\aichat\src\main\java\com\interview\aichat\file\FileHashService.java
-D:\work station\interview_new\aichat\src\main\java\com\interview\aichat\file\TextCleaningService.java
-D:\work station\interview_new\aichat\src\main\java\com\interview\aichat\service\ChatFileService.java
-D:\work station\interview_new\aichat\src\main\java\com\interview\aichat\file\ChatFileUploadService.java
-D:\work station\interview_new\aichat\src\main\java\com\interview\aichat\file\NoOpEmbeddedDocumentExtractor.java
-D:\work station\interview_new\aichat\src\main\java\com\interview\aichat\controller\ChatController.java
-D:\work station\interview_new\aichat\src\main\java\com\interview\aichat\file\DocumentParseService.java
-D:\work station\interview_new\aichat\src\main\java\com\interview\aichat\file\FileStorageService.java
-D:\work station\interview_new\aichat\src\main\java\com\interview\aichat\file\PersistenceService.java
-D:\work station\interview_new\aichat\src\main\java\com\interview\aichat\mapper\ChatFileMapper.java
-D:\work station\interview_new\aichat\src\main\java\com\interview\aichat\config\StorageConfigurationProperties.java
-D:\work station\interview_new\aichat\src\main\java\com\interview\aichat\model\ChatFile.java
-D:\work station\interview_new\aichat\src\main\java\com\interview\aichat\service\impl\ChatFileServiceImpl.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\config\S3Config.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\file\ChatFileUploadService.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\file\PersistenceService.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\mapper\ChatConversationMapper.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\service\ChatFileService.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\mapper\ChatFileMapper.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\service\ChatMessageService.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\model\ChatMessage.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\file\FileStorageService.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\model\MessageFile.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\service\rag\DocumentChunkingService.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\config\StorageConfigurationProperties.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\file\ChatParseService.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\service\rag\RAGOrchestrationService.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\service\impl\ChatConversationServiceImpl.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\dto\SendMessageRequest.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\file\TextCleaningService.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\mapper\MessageFileMapper.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\service\ChatConversationService.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\config\PgVectorTypeHandler.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\dto\CreateConversationRequest.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\service\rag\EmbeddingService.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\file\FileHashService.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\file\NoOpEmbeddedDocumentExtractor.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\dto\ConversationDTO.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\dto\ConversationDetailDTO.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\file\DocumentParseService.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\controller\ChatController.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\model\ChatConversation.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\service\rag\RetrievalService.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\AiChat.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\dto\FileUploadDTO.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\dto\MessageDTO.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\service\ChatUploadService.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\model\ChatFile.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\dto\FileStatusDTO.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\mapper\ChatMessageMapper.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\mapper\DocumentChunkMapper.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\service\impl\ChatFileServiceImpl.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\model\DocumentChunk.java
+E:\web_workstation\interview_new\interview_new\aichat\src\main\java\com\interview\aichat\service\impl\ChatMessageServiceImpl.java
