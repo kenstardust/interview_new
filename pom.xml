@@ -13,11 +13,11 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.interview.kevin</groupId>
-    <artifactId>interview_new</artifactId>
+    <groupId>com.industry.kevin</groupId>
+    <artifactId>industry_new</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>interview_new</name>
+    <name>industry_new</name>
 
     <modules>
         <module>aichat</module>

@@ -45,7 +45,7 @@ onMounted(async () => {
       await loadConversationMessages(activeConversationId.value)
     } else {
       // 创建默认会话
-      const newConv = await createConversation('知识库问答')
+      const newConv = await createConversation('工业软件问答')
       conversations.value.push(newConv)
       activeConversationId.value = newConv.conversationId
     }
@@ -232,33 +232,33 @@ function formatConversationItems() {
 </script>
 
 <template>
-  <div style="display: flex; height: 100vh; background: #f5f5f5;">
+  <div class="chat-container">
     <!-- 左侧：会话列表 -->
-    <div style="width: 260px; background: #fff; border-right: 1px solid #f0f0f0; display: flex; flex-direction: column;">
-      <div style="padding: 16px;">
+    <aside class="sidebar">
+      <div class="sidebar-header">
         <a-button type="primary" block @click="handleCreateConversation">
           新建会话
         </a-button>
       </div>
 
-      <div style="flex: 1; overflow-y: auto; padding: 8px;">
+      <div class="sidebar-content">
         <Conversations
           :items="formatConversationItems()"
           :activeKey="activeConversationId"
           @activeChange="handleConversationChange"
         />
       </div>
-    </div>
+    </aside>
 
     <!-- 右侧：聊天区域 -->
-    <div style="flex: 1; display: flex; flex-direction: column; padding: 16px; max-width: 1200px;">
+    <main class="chat-main">
       <!-- 标题 -->
-      <div style="padding: 16px; background: #fff; border-radius: 8px; margin-bottom: 16px;">
-        <h2 style="margin: 0;">企业知识库问答系统</h2>
-      </div>
+      <header class="chat-header">
+        <h2 style="margin: 0;">工业软件智能问答系统</h2>
+      </header>
 
       <!-- 消息列表 -->
-      <div style="flex: 1; overflow-y: auto; background: #fff; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+      <section class="messages-container">
         <Bubble.List
           :roles="roles"
           :items="messages.map(m => ({
@@ -268,29 +268,29 @@ function formatConversationItems() {
             loading: m.role === 'assistant' && m.content === '' && loading
           }))"
         />
-      </div>
+      </section>
 
       <!-- 文件状态提示 -->
-      <div v-if="files.length > 0" style="background: #fff; border-radius: 8px; padding: 12px; margin-bottom: 8px;">
-        <div style="display: flex; gap: 8px; align-items: center;">
+      <section v-if="files.length > 0" class="files-status">
+        <div class="files-status-content">
           <span>已上传文件：</span>
-          <div v-for="file in files" :key="file.fileId" style="display: flex; align-items: center; gap: 4px;">
+          <div v-for="file in files" :key="file.fileId" class="file-item">
             <a-tag :color="fileStatuses.get(file.fileId) === 'COMPLETED' ? 'success' : fileStatuses.get(file.fileId) === 'FAILED' ? 'error' : 'processing'">
               {{ file.name }}
             </a-tag>
-            <span style="font-size: 12px; color: #999;">
+            <span class="file-status-text">
               {{ fileStatuses.get(file.fileId) === 'PENDING' ? '等待处理' : fileStatuses.get(file.fileId) === 'PROCESSING' ? '处理中...' : fileStatuses.get(file.fileId) === 'COMPLETED' ? '就绪' : '失败' }}
             </span>
           </div>
         </div>
-      </div>
+      </section>
 
       <!-- 输入区域 -->
-      <div style="background: #fff; border-radius: 8px; padding: 16px;">
+      <footer class="input-area">
         <Sender
           :loading="loading"
           @submit="handleSend"
-          :submit-type="['enter', 'shiftEnter']"
+          submit-type="enter"
         >
           <template #prefix>
             <a-button @click="handleUploadClick" :disabled="loading">
@@ -308,12 +308,119 @@ function formatConversationItems() {
           style="display: none;"
           accept=".pdf,.doc,.docx,.txt"
         />
-      </div>
-    </div>
+      </footer>
+    </main>
   </div>
 </template>
 
 <style scoped>
+/* 主容器：响应式布局 */
+.chat-container {
+  display: flex;
+  height: 100vh;
+  min-height: 600px;  /* 最小高度防止布局崩溃 */
+  background: #f5f5f5;
+  overflow: hidden;  /* 防止超出屏幕 */
+}
+
+/* 左侧会话列表：响应式宽度 */
+.sidebar {
+  width: 20%;  /* 默认宽度20% */
+  min-width: 200px;  /* 最小宽度200px */
+  max-width: 280px;  /* 最大宽度280px */
+  background: #fff;
+  border-right: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease;  /* 宽度变化时平滑过渡 */
+}
+
+/* 小屏幕时左侧宽度固定 */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 200px;
+    min-width: 200px;
+    max-width: 200px;
+  }
+}
+
+.sidebar-header {
+  padding: 16px;
+  flex-shrink: 0;  /* 固定高度不压缩 */
+}
+
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+/* 右侧聊天区域：自适应宽度 */
+.chat-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  min-width: 0;  /* 允许flex子元素缩小 */
+  overflow: hidden;
+}
+
+/* 标题区域：固定高度 */
+.chat-header {
+  padding: 16px;
+  background: #fff;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  flex-shrink: 0;  /* 固定高度不压缩 */
+}
+
+/* 消息列表：自适应高度 */
+.messages-container {
+  flex: 1;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  min-height: 300px;  /* 最小高度保证可读性 */
+}
+
+/* 文件状态提示：动态显示 */
+.files-status {
+  background: #fff;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+  flex-shrink: 0;  /* 固定高度不压缩 */
+}
+
+.files-status-content {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;  /* 文件过多时自动换行 */
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.file-status-text {
+  font-size: 12px;
+  color: #999;
+}
+
+/* 输入区域：固定高度 */
+.input-area {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  flex-shrink: 0;  /* 固定高度不压缩 */
+  min-height: 100px;  /* 保证输入区域可用 */
+}
+
 /* 消息列表滚动条样式 */
 ::-webkit-scrollbar {
   width: 8px;
@@ -326,5 +433,17 @@ function formatConversationItems() {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #bfbfbf;
+}
+
+/* 响应式调整：超大屏幕 */
+@media (min-width: 1920px) {
+  .sidebar {
+    width: 25%;
+    max-width: 320px;
+  }
+
+  .chat-main {
+    max-width: 1400px;  /* 超大屏幕限制聊天区域最大宽度 */
+  }
 }
 </style>
