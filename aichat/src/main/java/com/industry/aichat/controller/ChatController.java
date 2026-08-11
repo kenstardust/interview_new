@@ -4,11 +4,11 @@ import com.industry.aichat.dto.*;
 import com.industry.aichat.model.ChatConversation;
 import com.industry.aichat.model.ChatFile;
 import com.industry.aichat.model.ChatMessage;
-import com.industry.aichat.model.DocumentChunk;
 import com.industry.aichat.service.ChatConversationService;
 import com.industry.aichat.service.ChatFileService;
 import com.industry.aichat.service.ChatMessageService;
-import com.industry.aichat.service.rag.RetrievalService;
+import com.industry.aichat.service.graph.GraphAnswerContext;
+import com.industry.aichat.service.graph.GraphAnswerService;
 import com.industry.aichat.file.ChatFileUploadService;
 import com.industry.kevin.result.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +19,7 @@ import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import jakarta.annotation.Resource;
@@ -56,7 +57,7 @@ public class ChatController {
     private ChatFileService chatFileService;
 
     @Resource
-    private RetrievalService retrievalService;
+    private GraphAnswerService graphAnswerService;
 
     @Resource
     private ChatModel chatModel;
@@ -228,45 +229,14 @@ public class ChatController {
                         request.getContent()
                 );
 
-                // 2. RAG检索上下文（如果提供了fileIds）
-                String context = "";
-                if (request.getFileIds() != null && !request.getFileIds().isEmpty()) {
-                    log.info("RAG检索开始：fileIds={}", request.getFileIds());
-                    List<DocumentChunk> chunks = retrievalService.retrieveRelevantChunksInFiles(
-                            request.getContent(),
-                            request.getFileIds(),
-                            5  // Top-K
-                    );
-                    context = retrievalService.buildContextString(chunks);
-                    log.info("RAG检索完成：找到{}个相关文档块", chunks.size());
-                } else {
-                    // 如果没有指定文件，使用全局检索
-                    log.info("未指定文件，使用全局RAG检索");
-                    List<DocumentChunk> chunks = retrievalService.retrieveRelevantChunks(
-                            request.getContent(),
-                            5  // Top-K
-                    );
-                    context = retrievalService.buildContextString(chunks);
-                    log.info("全局RAG检索完成：找到{}个相关文档块", chunks.size());
-                }
+                // 2. GraphRAG检索：优先使用Neo4j图谱路径和Chunk原文回溯，图谱无结果时退回pgvector
+                GraphAnswerContext answerContext = graphAnswerService.retrieveContext(
+                        request.getContent(),
+                        request.getFileIds()
+                );
 
-                // 3. 构建Prompt（包含系统提示和上下文）
-                StringBuilder promptBuilder = new StringBuilder();
-
-                // 系统提示
-                promptBuilder.append("你是工业软件智能问答助手，专门回答工业软件相关的问题。\n\n");
-
-                // 如果有RAG上下文，添加到Prompt
-                if (!context.isEmpty()) {
-                    promptBuilder.append("参考以下知识库内容回答问题：\n\n");
-                    promptBuilder.append(context);
-                    promptBuilder.append("\n\n");
-                }
-
-                // 用户问题
-                promptBuilder.append("用户问题：").append(request.getContent());
-
-                String finalPrompt = promptBuilder.toString();
+                // 3. 构建工业安全约束Prompt
+                String finalPrompt = graphAnswerService.buildPrompt(request.getContent(), answerContext);
                 log.debug("最终Prompt长度：{}字符", finalPrompt.length());
 
                 // 4. 调用LLM流式生成
@@ -301,12 +271,13 @@ public class ChatController {
                             },
                             error -> {
                                 // 错误处理
-                                log.error("LLM流式调用失败", error);
+                                String llmError = formatLlmError(error);
+                                log.error("LLM流式调用失败：{}", llmError, error);
                                 try {
                                     emitter.send(SseEmitter.event()
                                             .name("error")
-                                            .data("LLM调用失败：" + error.getMessage()));
-                                    emitter.completeWithError(error);
+                                            .data("LLM调用失败：" + llmError));
+                                    emitter.complete();
                                 } catch (IOException ex) {
                                     log.error("发送错误事件失败", ex);
                                 }
@@ -337,12 +308,13 @@ public class ChatController {
                     );
 
                 } catch (Exception e) {
-                    log.error("LLM调用异常", e);
+                    String llmError = formatLlmError(e);
+                    log.error("LLM调用异常：{}", llmError, e);
                     // 降级方案：返回错误提示
-                    String errorMessage = "抱歉，AI服务暂时不可用。错误信息：" + e.getMessage();
+                    String errorMessage = "抱歉，AI服务暂时不可用。错误信息：" + llmError;
                     emitter.send(SseEmitter.event().name("message").data(errorMessage));
-                    emitter.send(SseEmitter.event().name("error").data(e.getMessage()));
-                    emitter.completeWithError(e);
+                    emitter.send(SseEmitter.event().name("error").data(llmError));
+                    emitter.complete();
                 }
 
             } catch (Exception e) {
@@ -350,8 +322,8 @@ public class ChatController {
                 try {
                     emitter.send(SseEmitter.event()
                             .name("error")
-                            .data(e.getMessage()));
-                    emitter.completeWithError(e);
+                            .data(formatLlmError(e)));
+                    emitter.complete();
                 } catch (IOException ex) {
                     log.error("发送错误事件失败", ex);
                 }
@@ -425,5 +397,32 @@ public class ChatController {
     @RequestMapping("/test")
     public String test() {
         return "Hello World - RAG Chat System v1.0";
+    }
+
+    private String formatLlmError(Throwable error) {
+        Throwable current = error;
+        while (current.getCause() != null && current.getCause() != current) {
+            current = current.getCause();
+        }
+
+        if (error instanceof WebClientResponseException responseException) {
+            return buildWebClientErrorMessage(responseException);
+        }
+        if (current instanceof WebClientResponseException responseException) {
+            return buildWebClientErrorMessage(responseException);
+        }
+        return error.getMessage() == null ? error.getClass().getSimpleName() : error.getMessage();
+    }
+
+    private String buildWebClientErrorMessage(WebClientResponseException exception) {
+        String body = exception.getResponseBodyAsString();
+        StringBuilder builder = new StringBuilder();
+        builder.append(exception.getStatusCode().value())
+                .append(' ')
+                .append(exception.getStatusText());
+        if (body != null && !body.isBlank()) {
+            builder.append(" | body=").append(body.trim());
+        }
+        return builder.toString();
     }
 }

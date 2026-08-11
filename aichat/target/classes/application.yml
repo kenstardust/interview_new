@@ -1,0 +1,48 @@
+server:
+  port: 8051
+
+spring:
+  application:
+    name: industry-aichat
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/interview_guide
+    username: postgres
+    password: postgres
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    validate-on-migrate: true
+  neo4j:
+    uri: bolt://localhost:7687
+    authentication:
+      username: neo4j
+      password: password
+  ai:
+    dashscope:
+      workspace-id: llm-pevvtuf1lc1cm4d5
+      base-url: https://llm-pevvtuf1lc1cm4d5.cn-beijing.maas.aliyuncs.com
+      api-key: sk-ws-H.ERILLPM.fSgR.MEQCICRZCwkv7ZJOkicNHnMdMU25xHF7bdbiQwhV0P4VoBXCAiAB4ZzAD-bByBp_zkIiTEpvg_r--uYx_11p_qw32ouU4A
+      chat:
+        options:
+          model: qwen-plus
+      embedding:
+        options:
+          model: text-embedding-v2
+
+
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false
+
+aichat:
+  storage:
+    endpoint: http://localhost:9000
+    access-key: lS8ukgbP3BhMyC9GbGuD
+    secret-key: to7Kwm61JkDClvl3MVSCspsXOCHtnIfv3evWJcIv
+    bucket: aichat
+    region: us-east-1
+
+

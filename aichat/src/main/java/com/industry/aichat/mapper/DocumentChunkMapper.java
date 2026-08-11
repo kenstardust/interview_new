@@ -38,7 +38,7 @@ public interface DocumentChunkMapper extends BaseMapper<DocumentChunk> {
      * @return 相似文档分块列表（按相似度排序）
      */
     @Select("<script>" +
-            "SELECT id, file_id, chunk_id, content, chunk_index, start_position, end_position, token_count, created_at " +
+            "SELECT id, fileid, chunkid, content, chunkindex, startposition, endposition, tokencount, createdat " +
             "FROM document_chunk " +
             "ORDER BY embedding &lt;=&gt; #{embedding}::vector " +
             "LIMIT #{limit}" +
@@ -56,9 +56,9 @@ public interface DocumentChunkMapper extends BaseMapper<DocumentChunk> {
      * @return 相似文档分块列表
      */
     @Select("<script>" +
-            "SELECT id, file_id, chunk_id, content, chunk_index, start_position, end_position, token_count, created_at " +
+            "SELECT id, fileid, chunkid, content, chunkindex, startposition, endposition, tokencount, createdat " +
             "FROM document_chunk " +
-            "WHERE file_id IN " +
+            "WHERE fileid IN " +
             "<foreach item='fileId' collection='fileIds' open='(' separator=',' close=')'>" +
             "#{fileId}" +
             "</foreach>" +
@@ -80,10 +80,10 @@ public interface DocumentChunkMapper extends BaseMapper<DocumentChunk> {
      * @param fileId 文件ID
      * @return 分块列表（按序号排序）
      */
-    @Select("SELECT id, file_id, chunk_id, content, chunk_index, start_position, end_position, token_count, created_at " +
+    @Select("SELECT id, fileid, chunkid, content, chunkindex, startposition, endposition, tokencount, createdat " +
             "FROM document_chunk " +
-            "WHERE file_id = #{fileId} " +
-            "ORDER BY chunk_index ASC")
+            "WHERE fileid = #{fileId} " +
+            "ORDER BY chunkindex ASC")
     List<DocumentChunk> findByFileId(@Param("fileId") Long fileId);
 
     /**
@@ -92,7 +92,7 @@ public interface DocumentChunkMapper extends BaseMapper<DocumentChunk> {
      * @param fileId 文件ID
      * @return 分块数量
      */
-    @Select("SELECT COUNT(*) FROM document_chunk WHERE file_id = #{fileId}")
+    @Select("SELECT COUNT(*) FROM document_chunk WHERE fileid = #{fileId}")
     Integer countByFileId(@Param("fileId") Long fileId);
 
     /**
@@ -103,7 +103,7 @@ public interface DocumentChunkMapper extends BaseMapper<DocumentChunk> {
      * @param fileId 文件ID
      * @return 分块列表（包含向量）
      */
-    @Select("SELECT * FROM document_chunk WHERE file_id = #{fileId} ORDER BY chunk_index ASC")
+    @Select("SELECT * FROM document_chunk WHERE fileid = #{fileId} ORDER BY chunkindex ASC")
     List<DocumentChunk> findByFileIdWithEmbedding(@Param("fileId") Long fileId);
 
     /**
@@ -112,7 +112,7 @@ public interface DocumentChunkMapper extends BaseMapper<DocumentChunk> {
      * @param chunkId 分块UUID
      * @return 分块对象
      */
-    @Select("SELECT * FROM document_chunk WHERE chunk_id = #{chunkId}")
+    @Select("SELECT * FROM document_chunk WHERE chunkid = #{chunkId}")
     DocumentChunk findByChunkId(@Param("chunkId") String chunkId);
 
     /**
@@ -121,6 +121,6 @@ public interface DocumentChunkMapper extends BaseMapper<DocumentChunk> {
      * @param fileId 文件ID
      * @return 删除数量
      */
-    @Select("DELETE FROM document_chunk WHERE file_id = #{fileId}")
+    @Select("DELETE FROM document_chunk WHERE fileid = #{fileId}")
     Integer deleteByFileId(@Param("fileId") Long fileId);
 }

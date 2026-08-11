@@ -22,7 +22,7 @@ public interface MessageFileMapper extends BaseMapper<MessageFile> {
      * @param messageId 消息ID
      * @return 关联列表
      */
-    @Select("SELECT * FROM message_file WHERE message_id = #{messageId}")
+    @Select("SELECT * FROM message_file WHERE messageid = #{messageId}")
     List<MessageFile> findByMessageId(@Param("messageId") Long messageId);
 
     /**
@@ -31,7 +31,7 @@ public interface MessageFileMapper extends BaseMapper<MessageFile> {
      * @param fileId 文件ID
      * @return 关联列表
      */
-    @Select("SELECT * FROM message_file WHERE file_id = #{fileId}")
+    @Select("SELECT * FROM message_file WHERE fileid = #{fileId}")
     List<MessageFile> findByFileId(@Param("fileId") Long fileId);
 
     /**
@@ -40,7 +40,7 @@ public interface MessageFileMapper extends BaseMapper<MessageFile> {
      * @param messageId 消息ID
      * @return 文件ID列表
      */
-    @Select("SELECT file_id FROM message_file WHERE message_id = #{messageId}")
+    @Select("SELECT fileid FROM message_file WHERE messageid = #{messageId}")
     List<Long> findFileIdsByMessageId(@Param("messageId") Long messageId);
 
     /**
@@ -49,7 +49,7 @@ public interface MessageFileMapper extends BaseMapper<MessageFile> {
      * @param fileId 文件ID
      * @return 引用次数
      */
-    @Select("SELECT COUNT(*) FROM message_file WHERE file_id = #{fileId}")
+    @Select("SELECT COUNT(*) FROM message_file WHERE fileid = #{fileId}")
     Integer countByFileId(@Param("fileId") Long fileId);
 
     /**
@@ -58,6 +58,6 @@ public interface MessageFileMapper extends BaseMapper<MessageFile> {
      * @param messageId 消息ID
      * @return 删除数量
      */
-    @Select("DELETE FROM message_file WHERE message_id = #{messageId}")
+    @Select("DELETE FROM message_file WHERE messageid = #{messageId}")
     Integer deleteByMessageId(@Param("messageId") Long messageId);
 }

@@ -4,6 +4,7 @@ import com.industry.aichat.mapper.DocumentChunkMapper;
 import com.industry.aichat.model.ChatFile;
 import com.industry.aichat.model.DocumentChunk;
 import com.industry.aichat.service.ChatFileService;
+import com.industry.aichat.service.graph.GraphIndexService;
 import com.industry.kevin.exception.BusinessException;
 import com.industry.kevin.exception.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +46,9 @@ public class RAGOrchestrationService {
 
     @Autowired
     private DocumentChunkMapper documentChunkMapper;
+
+    @Autowired(required = false)
+    private GraphIndexService graphIndexService;
 
     /**
      * 异步处理并索引文档
@@ -114,6 +118,15 @@ public class RAGOrchestrationService {
                 DocumentChunk chunk = chunks.get(i);
                 chunk.setEmbedding(embeddings.get(i));
                 documentChunkMapper.insert(chunk);
+            }
+
+            if (graphIndexService != null) {
+                try {
+                    graphIndexService.indexDocumentGraph(file, chunks);
+                } catch (Exception graphException) {
+                    log.warn("GraphRAG图谱索引失败，保留向量索引结果：fileId={}, error={}",
+                            fileId, graphException.getMessage());
+                }
             }
 
             // 6. 更新文件状态为COMPLETED
@@ -273,6 +286,15 @@ public class RAGOrchestrationService {
         log.info("删除文档索引：fileId={}", fileId);
 
         try {
+            if (graphIndexService != null) {
+                try {
+                    graphIndexService.deleteDocumentGraph(fileId);
+                } catch (Exception graphException) {
+                    log.warn("GraphRAG图谱索引删除失败，继续删除向量索引：fileId={}, error={}",
+                            fileId, graphException.getMessage());
+                }
+            }
+
             // 删除document_chunk表中的所有分块
             Integer deletedCount = documentChunkMapper.deleteByFileId(fileId);
 

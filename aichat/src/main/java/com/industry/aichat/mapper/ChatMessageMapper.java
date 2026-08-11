@@ -22,7 +22,7 @@ public interface ChatMessageMapper extends BaseMapper<ChatMessage> {
      * @param conversationId 会话UUID
      * @return 消息列表
      */
-    @Select("SELECT * FROM chat_message WHERE conversation_id = #{conversationId} ORDER BY created_at ASC")
+    @Select("SELECT * FROM chat_message WHERE conversationid = #{conversationId} ORDER BY createdat ASC")
     List<ChatMessage> findByConversationId(@Param("conversationId") String conversationId);
 
     /**
@@ -32,7 +32,7 @@ public interface ChatMessageMapper extends BaseMapper<ChatMessage> {
      * @param limit          数量限制
      * @return 消息列表（倒序，最新的在前）
      */
-    @Select("SELECT * FROM chat_message WHERE conversation_id = #{conversationId} ORDER BY created_at DESC LIMIT #{limit}")
+    @Select("SELECT * FROM chat_message WHERE conversationid = #{conversationId} ORDER BY createdat DESC LIMIT #{limit}")
     List<ChatMessage> findRecentMessages(@Param("conversationId") String conversationId, @Param("limit") Integer limit);
 
     /**
@@ -41,7 +41,7 @@ public interface ChatMessageMapper extends BaseMapper<ChatMessage> {
      * @param conversationId 会话UUID
      * @return 消息数量
      */
-    @Select("SELECT COUNT(*) FROM chat_message WHERE conversation_id = #{conversationId}")
+    @Select("SELECT COUNT(*) FROM chat_message WHERE conversationid = #{conversationId}")
     Integer countByConversationId(@Param("conversationId") String conversationId);
 
     /**
@@ -50,7 +50,7 @@ public interface ChatMessageMapper extends BaseMapper<ChatMessage> {
      * @param conversationId 会话UUID
      * @return 用户消息列表
      */
-    @Select("SELECT * FROM chat_message WHERE conversation_id = #{conversationId} AND role = 'user' ORDER BY created_at ASC")
+    @Select("SELECT * FROM chat_message WHERE conversationid = #{conversationId} AND role = 'user' ORDER BY createdat ASC")
     List<ChatMessage> findUserMessages(@Param("conversationId") String conversationId);
 
     /**
@@ -59,6 +59,6 @@ public interface ChatMessageMapper extends BaseMapper<ChatMessage> {
      * @param conversationId 会话UUID
      * @return 助手消息列表
      */
-    @Select("SELECT * FROM chat_message WHERE conversation_id = #{conversationId} AND role = 'assistant' ORDER BY created_at ASC")
+    @Select("SELECT * FROM chat_message WHERE conversationid = #{conversationId} AND role = 'assistant' ORDER BY createdat ASC")
     List<ChatMessage> findAssistantMessages(@Param("conversationId") String conversationId);
 }
