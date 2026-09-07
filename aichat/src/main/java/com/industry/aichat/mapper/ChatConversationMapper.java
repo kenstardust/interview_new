@@ -28,7 +28,7 @@ public interface ChatConversationMapper extends BaseMapper<ChatConversation> {
      * @param conversationId 会话UUID
      * @return 会话对象
      */
-    @Select("SELECT * FROM chat_conversation WHERE conversation_id = #{conversationId}")
+    @Select("SELECT * FROM chat_conversation WHERE conversationid = #{conversationId}")
     ChatConversation findByConversationId(@Param("conversationId") String conversationId);
 
     /**
@@ -37,7 +37,7 @@ public interface ChatConversationMapper extends BaseMapper<ChatConversation> {
      * @param status 会话状态（1=ACTIVE）
      * @return 会话列表
      */
-    @Select("SELECT * FROM chat_conversation WHERE status = #{status} ORDER BY updated_at DESC")
+    @Select("SELECT * FROM chat_conversation WHERE status = #{status} ORDER BY updatedat DESC")
     List<ChatConversation> findActiveConversations(@Param("status") Integer status);
 
     /**
@@ -47,7 +47,7 @@ public interface ChatConversationMapper extends BaseMapper<ChatConversation> {
      * @param limit  每页数量
      * @return 会话列表
      */
-    @Select("SELECT * FROM chat_conversation ORDER BY updated_at DESC LIMIT #{limit} OFFSET #{offset}")
+    @Select("SELECT * FROM chat_conversation ORDER BY updatedat DESC LIMIT #{limit} OFFSET #{offset}")
     List<ChatConversation> findConversationsPage(@Param("offset") Integer offset, @Param("limit") Integer limit);
 
     /**
